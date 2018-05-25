@@ -24,11 +24,18 @@ class Model:
         self.model = self.models[model_type]
         self.plugins = plugins or []
 
-    def select(self, data):
+    def select(self, data, y_column):
         """Get the result of fitting the data on selectors."""
         if self.plugins:
             data = self.customize(data)
+
+        train, test = train_test_split(data, test_size=self.test_size)
+        x = data.drop(y_column)
+        y = data[y_column]
         raise NotImplementedError
+
+    def fit_model(self, features, y):
+        self.model.fit(features, y)
 
     def customize(self, data):
         """Apply plugins."""
