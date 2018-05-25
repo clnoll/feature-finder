@@ -13,6 +13,8 @@ from feature_finder.plugins import plugins
 
 class Model:
     models = {'linear': LinearRegression, 'logistic': LogisticRegression}
+    test_size = 0.2
+    k_fold = 5
 
     def __init__(self, model_type, plugins=None):
         if model_type not in self.models:
