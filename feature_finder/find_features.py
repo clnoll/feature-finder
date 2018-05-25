@@ -47,3 +47,27 @@ class Model:
     def print_results(self):
         """Prints the model's results."""
         raise NotImplementedError
+
+
+def validate(data, header, y):
+    if header:
+        assert y in data.columns, 'Requested y-column not found in CSV ({})'.format(y)
+    else:
+        try:
+            y = int(y)
+            assert y in data.columns, 'Requested y index position not found in CSV ({})'.format(y)
+        except (TypeError, ValueError, KeyError) as exc:
+            print('Error parsing index position of CSV ({})'.format(y))
+            raise exc
+
+
+def setup_data(data_csv, header, y):
+    try:
+        data = pd.read_csv(data_csv) if header else pd.read_csv(data_csv, header=None)
+        y = int(y) if header else int(y)
+    except Exception as exc:
+        print('Error reading CSV: {}.'.format(exc))
+        exit(1)
+    else:
+        validate(data, header, y)
+        return data, y
