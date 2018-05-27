@@ -9,6 +9,12 @@ from sklearn.model_selection import train_test_split
 from sklearn.model_selection import KFold
 
 from feature_finder.plugins import plugins
+from feature_finder.utils import (root_mean_squared_error,
+                                  accuracy,
+                                  precision,
+                                  recall,
+                                  false_alarm)
+
 
 MODELS = {
     'linear': {'model': LinearRegression, 'error': root_mean_squared_error},
@@ -26,6 +32,7 @@ class Model:
                 "Please specify one of the following model types: {}."
                 .format(', '.join(MODELS.keys())))
         self.model = MODELS[model_type]['model']()
+        self.error = MODELS[model_type]['error']
         self.plugins = plugins or []
 
     def select(self, data, y_column):
