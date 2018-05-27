@@ -1,4 +1,4 @@
-import argparse
+import argparse, os
 
 from feature_finder.find_features import Model, setup_data
 
@@ -37,4 +37,5 @@ def main():
 
 
 if __name__ == "__main__":
+    os.environ["PYTHONWARNINGS"] = "ignore"
     main()
