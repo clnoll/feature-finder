@@ -10,18 +10,22 @@ from sklearn.model_selection import KFold
 
 from feature_finder.plugins import plugins
 
+MODELS = {
+    'linear': {'model': LinearRegression, 'error': root_mean_squared_error},
+    'logistic': {'model': LogisticRegression, 'error': accuracy},
+}
+
 
 class Model:
-    models = {'linear': LinearRegression, 'logistic': LogisticRegression}
     test_size = 0.2
     k_fold = 5
 
     def __init__(self, model_type, plugins=None):
-        if model_type not in self.models:
+        if model_type not in MODELS:
             raise TypeError(
                 "Please specify one of the following model types: {}."
-                .format(', '.join(self.models.keys())))
-        self.model = self.models[model_type]
+                .format(', '.join(MODELS.keys())))
+        self.model = MODELS[model_type]['model']()
         self.plugins = plugins or []
 
     def select(self, data, y_column):
