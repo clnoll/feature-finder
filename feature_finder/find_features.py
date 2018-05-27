@@ -3,6 +3,7 @@
 import csv
 import inspect
 
+import numpy as np
 import pandas as pd
 from sklearn.linear_model import LinearRegression, LogisticRegression
 from sklearn.model_selection import train_test_split
@@ -41,12 +42,18 @@ class Model:
             data = self.customize(data)
 
         train, test = train_test_split(data, test_size=self.test_size)
-        x = data.drop(y_column)
-        y = data[y_column]
-        raise NotImplementedError
+        x_train = train.drop(y_column, axis=1)
+        y_train = train[y_column]
+        x_test = test.drop(y_column, axis=1)
+        y_test = test[y_column]
 
-    def fit_model(self, features, y):
-        self.model.fit(features, y)
+        return {c: self.get_feature_error(c, x_train, y_train, x_test, y_test)
+                for c in x_train.columns}
+
+    def get_feature_error(self, c, x_train, y_train, x_test, y_test):
+        self.model.fit(np.array(x_train[c]).reshape(-1, 1), y_train)
+        predicted = self.model.predict(np.array(x_test[c]).reshape(-1, 1))
+        return self.error(y_test, predicted)
 
     def customize(self, data):
         """Apply plugins."""
