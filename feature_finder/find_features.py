@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-import csv
 import inspect
 
 import numpy as np

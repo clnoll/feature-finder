@@ -15,7 +15,7 @@ def _true_p(t, p):
 
 
 def _true_n(t, p):
-    return ((~t & ~p)* -1).sum()
+    return ((~t & ~p)* - 1).sum()
 
 
 def _false_p(t, p):
