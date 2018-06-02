@@ -1,6 +1,6 @@
 import argparse, os
 
-from feature_finder.find_features import Model, setup_data
+from feature_finder.find_features import Model, setup_data, print_stats
 
 
 def main():
@@ -32,8 +32,7 @@ def main():
     data, y = setup_data(data_csv, header, y)
 
     model = Model(model_type, plugins)
-    model.select(data, y)
-    model.print_results()
+    print_stats(model.select(data, y), model_type)
 
 
 if __name__ == "__main__":

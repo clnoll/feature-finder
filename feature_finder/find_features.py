@@ -17,8 +17,8 @@ from feature_finder.utils import (root_mean_squared_error,
 
 
 MODELS = {
-    'linear': {'model': LinearRegression, 'error': root_mean_squared_error},
-    'logistic': {'model': LogisticRegression, 'error': accuracy},
+    'linear': {'model': LinearRegression, 'error': root_mean_squared_error, 'best_selector': 0},
+    'logistic': {'model': LogisticRegression, 'error': accuracy, 'best_selector': -1},
 }
 
 
@@ -68,10 +68,6 @@ class Model:
                     'Error with plugin "{}".'.format(fn.__name__))
         return data
 
-    def print_results(self):
-        """Prints the model's results."""
-        raise NotImplementedError
-
 
 def validate(data, header, y):
     if header:
@@ -95,3 +91,16 @@ def setup_data(data_csv, header, y):
     else:
         validate(data, header, y)
         return data, y
+
+
+def print_stats(results, model_type):
+    """Prints the error for the model's features."""
+    features = sorted(results.values())
+    row_format = '{:<15} {:^15}'
+    formatted_result_type = MODELS[model_type]['error'].__name__.replace('_', ' ').title()
+    print(row_format.format('Column', formatted_result_type))
+    for column, error in results.items():
+        print(row_format.format(
+            str(column) + '*' if results[column] == features[MODELS[model_type]['best_selector']]
+            else str(column),
+            round(error, 2)))
