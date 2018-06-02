@@ -58,7 +58,7 @@ class Model:
         """Apply plugins."""
         plugins_functions = [
             obj for name, obj in inspect.getmembers(plugins)
-            if inspect.isfunction(obj)
+            if inspect.isfunction(obj) and name in self.plugins
         ]
         for fn in plugins_functions:
             try:

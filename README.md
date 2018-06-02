@@ -15,18 +15,20 @@ feature-finder logistic feature_finder/tests/sample_data/01_feature_logistic.csv
 
 The following help menu is available via `feature-finder --help`.
 ```
-usage: feature-finder [-h] [--header] [--plugins] model data y
+usage: feature-finder [-h] [--header] [--plugins PLUGINS [PLUGINS ...]]
+                      model data y
 
 positional arguments:
-  model       Model type: linear or logistic.
-  data        Data in CSV format.
-  y           y-value of column (index position or header name).
+  model                 Model type: linear or logistic.
+  data                  Data in CSV format.
+  y                     y-value of column (index position or header name).
 
 optional arguments:
-  -h, --help  show this help message and exit
-  --header    Data CSV contains header row.
-  --plugins   Use plugin(s) defined in plugins directory to add or clean up
-              feature columns.
+  -h, --help            show this help message and exit
+  --header              Data CSV contains header row.
+  --plugins PLUGINS [PLUGINS ...]
+                        Use plugin(s) defined in plugins directory to add or
+                        clean up feature columns.
 ```
 
 Your CSV should include at least one x-column with numerical data for input as a dependent variable into themodel, and one y-column with either quantitative or categorical data.
@@ -43,7 +45,7 @@ The plugin must return a pandas DataFrame that includes the features whose error
 
 Modify your data CSV with plugins using the following input format:
 ```
-feature-finder <model type> <path/to/data.csv> <index or name of y-column> <optional: --header> --plugins
+feature-finder <model type> <path/to/data.csv> <index or name of y-column> <optional: --header> --plugins <plugin1 plugin2 etc>
 ```
 
 Tests can be run from the `feature-finder` directory with `nosetests .`.

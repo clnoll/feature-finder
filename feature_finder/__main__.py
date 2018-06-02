@@ -15,8 +15,8 @@ def main():
     )
     parser.add_argument(
         '--plugins',
+        nargs='+',
         help='Use plugin(s) defined in plugins directory to add or clean up feature columns.',
-        action='store_true'
     )
     args = parser.parse_args()
     model_type = args.model

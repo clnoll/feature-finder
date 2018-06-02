@@ -17,25 +17,33 @@ from feature_finder.find_features import Model, setup_data
 class TestFindFeatures(TestCase):
 
     @classmethod
-    def _get_test_files(cls, model_type):
+    def _get_test_files(cls, model_type, plugins):
         files = os.listdir(cls.dir_path + model_type)
-        return [cls.dir_path + model_type + '/' + files[i] for i in range(len(files))]
+        if plugins:
+            return [cls.dir_path + model_type + '/' + files[i] for i in range(len(files))
+                    if 'plugins' in files[i]]
+        else:
+            return [cls.dir_path + model_type + '/' + files[i] for i in range(len(files))
+                    if 'plugins' not in files[i]]
 
     @classmethod
     def setUpClass(cls):
         cls.dir_path = os.path.dirname(os.path.realpath(__file__)) + '/sample_data/'
-        cls.linear_test_files = cls._get_test_files('linear')
-        cls.logistic_test_files = cls._get_test_files('logistic')
+        cls.linear_test_files = cls._get_test_files('linear', False)
+        cls.linear_test_files_plugins = cls._get_test_files('linear', True)
+        cls.logistic_test_files = cls._get_test_files('logistic', False)
+        cls.logistic_test_files_plugins = cls._get_test_files('logistic', True)
+        cls.test_plugins = ['string_length']
 
 
-    def _test_model(self, model_type, test_files, error=True):
+    def _test_model(self, model_type, test_files, plugins, error=True):
         for f in test_files:
             header = True if 'header' in f else False
             with open(f) as fp:
                 n_cols = len(next(reader(fp)))
 
             data, y = setup_data(f, header, n_cols - 1)
-            model = Model(model_type)
+            model = Model(model_type, plugins)
             results = model.select(data, y)
 
             if error:
@@ -51,8 +59,16 @@ class TestFindFeatures(TestCase):
 
     def test_linear_regression(self):
         """Linear regression model selects most predictive features."""
-        self._test_model('linear', self.linear_test_files)
+        self._test_model('linear', self.linear_test_files, plugins=None)
+
+    def test_linear_regression_plugins(self):
+        """Linear regression model selects most predictive features."""
+        self._test_model('linear', self.linear_test_files_plugins, plugins=self.test_plugins)
 
     def test_logistic_regression(self):
         """Logistic regression model selects most predictive features."""
-        self._test_model('logistic', self.logistic_test_files, error=False)
+        self._test_model('logistic', self.logistic_test_files, plugins=None, error=False)
+
+    def test_logistic_regression_plugins(self):
+        """Logistic regression model selects most predictive features."""
+        self._test_model('logistic', self.logistic_test_files_plugins, plugins=self.test_plugins, error=False)
