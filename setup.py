@@ -14,7 +14,7 @@ setup(
                       'matplotlib==2.2.2'],
     entry_points={
         'console_scripts': [
-            'feature-finder = feature_finder.__main__:main'
+            'feature-finder = feature_finder.main:main'
         ]
     },
 )

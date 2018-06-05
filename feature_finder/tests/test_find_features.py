@@ -11,7 +11,7 @@ import os
 from csv import reader
 from unittest import TestCase
 
-from feature_finder.find_features import Model, setup_data
+from feature_finder.find_features import get_model, setup_data
 
 
 class TestFindFeatures(TestCase):
@@ -43,7 +43,7 @@ class TestFindFeatures(TestCase):
                 n_cols = len(next(reader(fp)))
 
             data, y = setup_data(f, header, n_cols - 1)
-            model = Model(model_type, plugins)
+            model = get_model(model_type, plugins)
             results = model.select(data, y)
 
             if error:

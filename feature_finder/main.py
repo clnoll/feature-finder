@@ -1,6 +1,6 @@
 import argparse, os
 
-from feature_finder.find_features import Model, setup_data, print_stats
+from feature_finder.find_features import get_model, setup_data, print_stats
 
 
 def main():
@@ -19,20 +19,15 @@ def main():
         help='Use plugin(s) defined in plugins directory to add or clean up feature columns.',
     )
     args = parser.parse_args()
-    model_type = args.model
-    data_csv = args.data
-    header = args.header
-    plugins = args.plugins
-    y = args.y
 
-    if not data_csv:
+    if not args.data:
         print('Please provide the path to your data (CSV).')
         exit(1)
 
-    data, y = setup_data(data_csv, header, y)
+    data, y = setup_data(args.data, args.header, args.y)
 
-    model = Model(model_type, plugins)
-    print_stats(model.select(data, y), model_type)
+    model = get_model(args.model, args.plugins)
+    print_stats(model.select(data, y), args.model)
 
 
 if __name__ == "__main__":

@@ -31,7 +31,7 @@ optional arguments:
                         clean up feature columns.
 ```
 
-Your CSV should include at least one x-column with numerical data for input as a dependent variable into themodel, and one y-column with either quantitative or categorical data.
+Your CSV should include at least one x-column with numerical data for input as a dependent variable into the model, and one y-column with either quantitative or categorical data.
 e.g.
 ```
 1, 22.2, 30

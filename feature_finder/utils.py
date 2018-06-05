@@ -5,7 +5,7 @@ import numpy as np
 
 def root_mean_squared_error(t, p):
     """Calculate root mean squared error from actual and predicted values."""
-    return np.sqrt(np.square(t - p).sum() / len(t))
+    return np.sqrt(np.square(t - p).mean())
 
 
 # Utilities for logistic regression error
@@ -15,7 +15,7 @@ def _true_p(t, p):
 
 
 def _true_n(t, p):
-    return ((~t & ~p)* - 1).sum()
+    return (~t & ~p).sum()
 
 
 def _false_p(t, p):
